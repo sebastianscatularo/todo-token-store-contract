@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:jss="http://www.jss.com.ar/service/"
+                  xmlns:entity="http://www.jss.com.ar/domain/"
+                  targetNamespace="http://www.jss.com.ar/service/">
+
+    <wsdl:documentation>
+        TokenStore.wsdl
+    </wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import schemaLocation="./domain/TokenType.xsd" namespace="http://www.jss.com.ar/domain/" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="TokenInputMessage">
+        <wsdl:part name="TokenInputPart" element="entity:TokenType"/>
+    </wsdl:message>
+
+    <wsdl:message name="TokenOutputMessage">
+        <wsdl:part name="TokenOutputPart" element="entity:TokenType"/>
+    </wsdl:message>
+
+    <wsdl:portType name="TokenStorePortType">
+        <wsdl:operation name="Hello">
+            <wsdl:input name="helloInput"
+                        message="jss:TokenInputMessage"/>
+            <wsdl:output name="helloOutput"
+                         message="jss:TokenOutputMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="helloBinding" type="jss:TokenStorePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Hello">
+            <soap:operation soapAction="http://www.jss.com.ar/service/Hello"/>
+            <wsdl:input name="helloInput">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="helloOutput">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="TokenStoreService">
+        <wsdl:port name="helloPort" binding="jss:helloBinding">
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
