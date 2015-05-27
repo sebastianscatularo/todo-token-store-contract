@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<wsdl:definitions
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:jss="http://www.jss.com.ar/service/token/" xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.jss.com.ar/service/token/">
+
+    <wsdl:documentation>
+        TokenWarehouse.wsdl
+        Description:
+        Component that allow the storage and retrieve of token from many services, that need it.
+    </wsdl:documentation>
+
+    <wsdl:types>
+        <xs:schema xmlns="http://www.jss.com.ar/service/token/domain/"
+                   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                   targetNamespace="http://www.jss.com.ar/service/token/domain/"
+                   elementFormDefault="unqualified"
+                   attributeFormDefault="unqualified">
+            <xs:element name="PutTokenRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:annotation>
+                            <xs:documentation>
+                                Allow us to store o replace hashed token.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:element minOccurs="1" maxOccurs="1" name="key" type="xs:string" />
+                        <xs:element minOccurs="1" maxOccurs="1" name="value" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PutTokenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:annotation>
+                            <xs:documentation>
+                                Allow us to store o replace hashed token.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:element minOccurs="1" maxOccurs="1" name="result" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetTokenRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:annotation>
+                            <xs:documentation>
+                                Allow us to store o replace hashed token.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:element minOccurs="1" maxOccurs="1" name="key" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="GetTokenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:annotation>
+                            <xs:documentation>
+                                Allow us to store o replace hashed token.
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:element minOccurs="1" maxOccurs="1" name="value" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="PutTokenMessage" xmlns:token="http://www.jss.com.ar/service/token/domain/">
+        <wsdl:part name="body" element="token:PutTokenRequest" />
+    </wsdl:message>
+
+    <wsdl:message name="PutTokenResultMessage" xmlns:token="http://www.jss.com.ar/service/token/domain/">
+        <wsdl:part name="body" element="token:PutTokenResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetTokenMessage" xmlns:token="http://www.jss.com.ar/service/token/domain/">
+        <wsdl:part name="body" element="token:GetTokenRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="GetTokenResultMessage" xmlns:token="http://www.jss.com.ar/service/token/domain/">
+        <wsdl:part name="body" element="token:GetTokenResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="TokenWarehousePort">
+        <wsdl:operation name="PutToken">
+            <wsdl:input name="PutTokenInput" message="jss:PutTokenMessage"/>
+            <wsdl:output name="PutTokenOutput" message="jss:PutTokenResultMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetToken">
+            <wsdl:input name="GetTokenInput" message="jss:GetTokenMessage"/>
+            <wsdl:output name="GetTokenOutput" message="jss:GetTokenResultMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- Starts Binding -->
+    <wsdl:binding name="TokenWarehouseBinding" type="jss:TokenWarehousePort">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="PutToken">
+            <soap:operation soapAction="http://www.jss.com.ar/service/token/warehouse/put" style="document"/>
+            <wsdl:input name="PutTokenInput">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="PutTokenOutput">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetToken">
+            <soap:operation soapAction="http://www.jss.com.ar/service/token/warehouse/get" style="document"/>
+            <wsdl:input name="GetTokenInput">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="GetTokenOutput">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <!-- Ends Binding -->
+    <!-- Starts Service -->
+    <wsdl:service name="TokenWarehouseService">
+        <wsdl:port name="TokenWarehouse" binding="jss:TokenWarehouseBinding">
+            <soap:address location="http://www.jss.com.ar/service/token/warehouse"/>
+        </wsdl:port>
+    </wsdl:service>
+    <!-- Ends Service -->
+</wsdl:definitions>
